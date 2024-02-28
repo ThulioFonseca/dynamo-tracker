@@ -1,4 +1,6 @@
 .content-container{
     margin: 0%;
     padding: 1%;
+    height: calc(100vh - 2.5rem);
+    overflow-y: auto; 
 }

@@ -3,6 +3,7 @@ import Home from "../pages/Home/Home";
 import Devices from "../pages/Devices/Devices";
 import Settings from "../pages/Settings/Settings";
 import Logs from "../pages/Logs/Logs";
+import NotFound from "../pages/NotFound/NotFound";
 
 export default function AppRoutes() {
   return (
@@ -12,7 +13,7 @@ export default function AppRoutes() {
       <Route path="/devices" component={Devices}/>
       <Route path="/settings" component={Settings}/>
       <Route path="/logs"  component={Logs} />
-      <Route>404: No such page!</Route>
+      <Route path="*" component={NotFound}></Route>
     </Switch>
   );
 }

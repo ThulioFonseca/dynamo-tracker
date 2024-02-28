@@ -10,16 +10,12 @@ function App() {
   return (
     <Router>
       <MainContainer>
-        <div className="container-fluid p-0" style={{ height: "5%" }}>
-          <NavBar />
-        </div>
-        <div className="container-fluid p-0" style={{ height: "95%" }}>
-          <div className="row p-0 m-0" style={{ height: "100%" }}>
-            <SideBar />
-            <ContentContainer>
-              <AppRoutes />
-            </ContentContainer>
-          </div>
+        <NavBar />
+        <div className="container-fluid p-0 m-0 d-flex">
+          <SideBar />
+          <ContentContainer>
+            <AppRoutes />
+          </ContentContainer>
         </div>
       </MainContainer>
     </Router>
