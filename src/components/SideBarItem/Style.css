@@ -1,0 +1,25 @@
+.sidebar-item{
+    padding-left: 15%;
+    padding-top: 1%;
+    padding-bottom: 1%;
+}
+
+.sidebar-item-icon {
+    font-size: 1.2rem;
+    
+}
+
+.sidebar-item-label
+ {
+  text-decoration: none;
+  font-family: "poppins", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  list-style: none;
+}
+
+li:hover {
+  cursor: pointer;
+  background-color: rgb(216, 239, 255);
+}
+
