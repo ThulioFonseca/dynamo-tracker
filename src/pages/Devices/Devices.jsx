@@ -70,7 +70,7 @@ export default function Devices() {
       <SimpleTable
         header={header}
         data={devices}
-        useCheckbox="true"
+        useCheckbox={true}
         onItemsCheckedChange={(checkedItems) => console.log(checkedItems)}
       />
     </>

@@ -32,6 +32,17 @@ export default function SimpleTable({
     });
   };
 
+  // Manipulador de evento para tratar o clique na linha
+  const handleRowClick = (itemId, event) => {
+    // Se o clique foi no checkbox, não faz nada (evita a propagação do evento)
+    if (event.target.tagName.toLowerCase() === "input") {
+      return;
+    }
+
+    // Clique fora do checkbox, então lida com a marcação/desmarcação do item
+    handleItemCheck(itemId);
+  };
+
   // Manipulador de evento para marcar/desmarcar todos os itens
   const handleCheckAll = () => {
     if (checkedItems.length === data.length) {
@@ -60,7 +71,7 @@ export default function SimpleTable({
             </th>
           )}
           {header.map((item) => (
-            <th key={item["Id"]}>
+            <th key={item}>
               <div className="table-cell">{item}</div>
             </th>
           ))}
@@ -68,12 +79,13 @@ export default function SimpleTable({
       </thead>
       <tbody>
         {data.map((item) => (
-          <tr key={item["Id"]} onClick={() => handleItemCheck(item["Id"])}>
+          <tr key={item["Id"]} onClick={(e) => handleRowClick(item["Id"], e)}>
             {useCheckbox && (
               <td>
                 <CheckBox
                   checked={checkedItems.includes(item["Id"])}
                   onChange={() => handleItemCheck(item["Id"])}
+                  onClick={(e) => e.stopPropagation()}
                 />
               </td>
             )}
