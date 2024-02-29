@@ -1,0 +1,67 @@
+.toolbar {
+  margin: 0.8rem 0.3rem 0 0.3rem;
+}
+
+.toolbar-button {
+  cursor: pointer;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  text-decoration: none;
+  color: black;
+}
+
+.toolbar-button:hover {
+  background-color: #f3f2f1;
+  color: black;
+}
+
+.toolbar-button-link {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  text-decoration: none;
+  color: black;
+}
+
+.toolbar-button-link:hover {
+  background-color: #f3f2f1;
+  color: black;
+}
+
+.toolbar-button-label {
+  text-decoration: none;
+  font-family: "poppins", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-size: 0.8rem;
+}
+
+.toolbar-button-icon {
+  font-size: 1.2rem;
+  padding: 0.2rem 0.2rem 0.2rem 0;
+  margin-right: 0.1rem;
+  color: #4d9adf;
+}
+
+.toolbar-divider {
+  margin: 0 0 1rem 0;
+  color: #959595;
+}
+
+.page-title {
+  font-family: "poppins", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-size: 1.5rem;
+  margin: 2rem 0 0 0;
+}
+
+.page-subtitle {
+  font-family: "poppins", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-size: 0.8rem;
+}

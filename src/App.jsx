@@ -5,6 +5,7 @@ import AppRoutes from "./util/AppRoutes";
 import { Router } from "wouter";
 import MainContainer from "./components/Containers/MainContainer/MainContainer";
 import ContentContainer from "./components/Containers/ContentContainer/ContentContainer";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   return (

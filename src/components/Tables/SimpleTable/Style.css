@@ -1,0 +1,25 @@
+tr {
+  text-align: start;
+}
+
+th {
+  font-family: "Poppins", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-size: 0.8rem;
+}
+
+td {
+  white-space: nowrap;
+  font-family: "Poppins", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-size: 0.8rem;
+}
+
+.table-cell {
+  display: flex;
+  width: auto;
+  align-items: center;
+  height: 1.8rem;
+}
