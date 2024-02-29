@@ -33,32 +33,39 @@ const devices = [
   },
 ];
 
-const header = ["Status", "Serial Number", "Alias", "Vehicle ID", "Vehicle Model", "Vehicle Brand"];
+const header = [
+  "Status",
+  "Serial Number",
+  "Alias",
+  "Vehicle ID",
+  "Vehicle Model",
+  "Vehicle Brand",
+];
 
 export default function Devices() {
   return (
     <>
       <h3 className="page-title">Devices</h3>
       <p className="page-subtitle">Device management page</p>
-      <Row className="toolbar">
-        <Col md={"auto"} className="toolbar-button">
+      <Row md={8} className="toolbar">
+        <Col sm={"auto"} className="toolbar-button">
           <Link href="/Devices/Add" className="toolbar-button-link ">
             <i className="bi bi-plus-lg toolbar-button-icon" />
             <span className="toolbar-button-label">Add Device</span>
           </Link>
         </Col>
-        <Col md={"auto"} className="toolbar-button">
+        <Col sm={"auto"} className="toolbar-button">
           <Link href="/Devices/Edit" className="toolbar-button-link ">
             <i className="bi bi-pen toolbar-button-icon" />
             <span className="toolbar-button-label">Edit</span>
           </Link>
         </Col>
-        <Col md={"auto"} className="toolbar-button" onClick={() => {}}>
+        <Col sm={"auto"} className="toolbar-button" onClick={() => {}}>
           <i className="bi bi-trash toolbar-button-icon" />
           <span className="toolbar-button-label">Delete</span>
         </Col>
         <Col
-          md={"auto"}
+          sm={"auto"}
           className="toolbar-button"
           onClick={window.location.reload}
         >

@@ -1,5 +1,6 @@
 .toolbar {
   margin: 0.8rem 0.3rem 0 0.3rem;
+  flex-wrap: nowrap;
 }
 
 .toolbar-button {
