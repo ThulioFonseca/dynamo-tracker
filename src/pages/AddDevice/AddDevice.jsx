@@ -7,7 +7,6 @@ import CancelButton from "../../components/Inputs/CancelButton/CancelButton";
 import Dropdown from "../../components/Inputs/Dropdown/Dropdown";
 
 export default function AddDevice() {
-
   const options = [
     { label: "Option 1", value: "option1" },
     { label: "Option 2", value: "option2" },
@@ -41,7 +40,7 @@ export default function AddDevice() {
                 Serial Number <span style={{ color: "red" }}>*</span>
               </label>
             </Col>
-            <Col md={4} className="d-flex align-items-center">
+            <Col md={12} lg={4} className="d-flex align-items-center">
               <Field
                 as={Dropdown}
                 options={options}
@@ -58,7 +57,7 @@ export default function AddDevice() {
                 Alias <span style={{ color: "red" }}>*</span>
               </label>
             </Col>
-            <Col md={4} className="d-flex align-items-center">
+            <Col md={12} lg={4} className="d-flex align-items-center">
               <Field
                 type="text"
                 id="alias"
@@ -74,7 +73,7 @@ export default function AddDevice() {
                 Mac-Address <span style={{ color: "red" }}>*</span>
               </label>
             </Col>
-            <Col md={4} className="d-flex align-items-center">
+            <Col md={12} lg={4} className="d-flex align-items-center">
               <Field
                 type="text"
                 id="macAddress"
@@ -86,11 +85,11 @@ export default function AddDevice() {
           </Row>
           <Row className="mb-2">
             <Col md={2} className=" align-items-center">
-              <label htmlFor="manufacturer">
+              <label htmlFor="manufacturer" className="d-block text-truncate">
                 Vehicle Manufacturer <span style={{ color: "red" }}>*</span>
               </label>
             </Col>
-            <Col md={4} className="d-flex align-items-center">
+            <Col md={12} lg={4} className="d-flex align-items-center">
               <Field
                 type="text"
                 id="manufacturer"
@@ -102,11 +101,11 @@ export default function AddDevice() {
           </Row>
           <Row className="mb-2">
             <Col md={2} className=" align-items-center">
-              <label htmlFor="model">
+              <label htmlFor="model" className="d-block text-truncate">
                 Vehicle Model <span style={{ color: "red" }}>*</span>
               </label>
             </Col>
-            <Col md={4} className="d-flex align-items-center">
+            <Col md={12} lg={4} className="d-flex align-items-center">
               <Field
                 type="text"
                 id="model"
@@ -118,11 +117,11 @@ export default function AddDevice() {
           </Row>
           <Row className="mb-2">
             <Col md={2} className=" align-items-center">
-              <label htmlFor="year">
+              <label htmlFor="year" className="d-block text-truncate">
                 Model Year <span style={{ color: "red" }}>*</span>
               </label>
             </Col>
-            <Col md={4} className="d-flex align-items-center">
+            <Col md={12} lg={4} className="d-flex align-items-center">
               <Field
                 type="text"
                 id="year"
@@ -135,11 +134,11 @@ export default function AddDevice() {
 
           <Row className="mb-2">
             <Col md={2} className=" align-items-center">
-              <label htmlFor="plate">
+              <label htmlFor="plate" className="d-block text-truncate">
                 License Plate <span style={{ color: "red" }}>*</span>
               </label>
             </Col>
-            <Col md={4} className="d-flex align-items-center">
+            <Col md={12} lg={4} className="d-flex align-items-center">
               <Field
                 type="text"
                 id="plate"
