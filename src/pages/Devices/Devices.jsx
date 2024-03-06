@@ -5,39 +5,10 @@ import { Link } from "wouter";
 import { useEffect, useState } from "react";
 import { HttpService } from "../../Services/HttpService";
 
-const devices = [
-  {
-    Id: "1",
-    Status: "Active",
-    SerialNumber: "123456",
-    Alias: "Car 1",
-    VehicleID: "7890",
-    VehicleModel: "Model S",
-    VehicleBrand: "Tesla",
-  },
-  {
-    Id: "2",
-    Status: "Inactive",
-    SerialNumber: "654321",
-    Alias: "Car 2",
-    VehicleID: "1234",
-    VehicleModel: "Model 3",
-    VehicleBrand: "Tesla",
-  },
-  {
-    Id: "3",
-    Status: "Pending",
-    SerialNumber: "987654",
-    Alias: "Car 3",
-    VehicleID: "3456",
-    VehicleModel: "Model X",
-    VehicleBrand: "Tesla",
-  },
-];
-
 const header = [
   "Status",
   "Serial Number",
+  "Mac-Address",
   "Alias",
   "Vehicle ID",
   "Vehicle Model",

@@ -1,0 +1,84 @@
+.custom-dropdown {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.custom-dropdown-toggle {
+  padding: 0.1rem 0.5rem;
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  border: 1px solid rgb(145, 145, 145);
+  margin: 0;
+  color: black;
+  border-radius: 0;
+  cursor: pointer;
+  font-family: "poppins", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-size: 0.8rem;
+  width: 100%;
+}
+
+.custom-dropdown-toggle:hover {
+  border: 1px solid black;
+}
+
+.custom-dropdown-toggle::after {
+  display: none;
+}
+
+.arrow {
+  margin-left: auto; /* Move a seta para a direita, no final do toggle */
+  margin-right: 5px; /* Adiciona um pequeno espaço entre o texto e a seta */
+}
+
+.arrow::before {
+  content: "";
+  display: block;
+  width: 0.6rem; /* Largura do ícone */
+  height: 0.6rem; /* Altura do ícone */
+  border: solid rgb(112, 112, 112);
+  border-width: 0.1rem 0.1rem 0 0; /* Ajusta a largura e a altura dos lados da seta */
+  transform: rotate(135deg); /* Rotaciona a seta */
+  position: relative;
+  top: -0.2rem; /* Ajusta a posição vertical da seta */
+  left: 0rem; /* Ajusta a posição horizontal da seta */
+}
+
+.custom-dropdown-content {
+  display: block; /* Alterado para 'none' para ocultar o dropdown por padrão */
+  position: absolute;
+  top: calc(100% + 1px);
+  left: 0;
+  width: 100%;
+  background-color: #fff;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ccc;
+  border-top: none;
+  border-radius: 0;
+  z-index: 1;
+}
+
+.custom-dropdown-content button {
+  display: block;
+  width: 100%;
+  padding: 0.3rem 0.5rem;
+  margin: 0;
+  border: none;
+  background: none;
+  color: #333;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  border-radius: 0;
+  font-family: "poppins", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-size: 0.8rem;
+}
+
+.custom-dropdown-content button:hover {
+  background-color: #f4f4f4;
+}

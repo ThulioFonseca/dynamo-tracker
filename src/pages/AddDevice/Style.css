@@ -1,0 +1,71 @@
+label {
+  font-family: "poppins", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-size: 0.8rem;
+}
+
+.input-field {
+  appearance: none;
+  background-color: transparent;
+  border: 1px solid rgb(145, 145, 145);
+  padding: 0.3rem 0.5rem;
+  margin: 0;
+  color: black;
+  font-family: "poppins", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-size: 0.8rem;
+}
+
+.input-field:focus {
+  outline: 1px solid #0078d4;
+  border: 1px solid #0078d4;
+}
+
+.input-field:not(:focus):hover {
+  border: 1px solid black;
+}
+
+.inner-title {
+  font-family: "poppins", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin: 1rem 0 0.5rem 0;
+}
+
+option {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  font-family: "poppins", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-size: 0.8rem;
+  border-radius: 0%;
+  border-collapse: separate;
+}
+
+.input-select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: transparent;
+  border: 1px solid rgb(145, 145, 145);
+  padding: 5px;
+  margin: 0;
+  color: black;
+  font-family: "poppins", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-size: 0.8rem;
+}
+
+.input-select:focus {
+  outline: 1px solid #0078d4;
+  border: 1px solid #0078d4;
+  border-radius: 0;
+}
+
+

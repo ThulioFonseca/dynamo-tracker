@@ -1,0 +1,29 @@
+.cancel-button {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  border: 1px solid black;
+  background-color: white;
+  cursor: pointer;
+  border-radius: 0%;
+  padding: 0.3rem 0.9rem;
+  width: 7rem;
+}
+
+.cancel-button:hover {
+  background-color: #d7d7d7;
+  border: 1px solid black;
+}
+
+.cancel-button-label {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  color: black;
+  justify-content: center;
+  text-align: center;
+  font-family: "poppins", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-size: 0.8rem;
+}

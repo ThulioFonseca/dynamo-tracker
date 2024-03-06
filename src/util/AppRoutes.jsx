@@ -4,6 +4,7 @@ import Devices from "../pages/Devices/Devices";
 import Settings from "../pages/Settings/Settings";
 import AppLogs from "../pages/AppLogs/AppLogs";
 import NotFound from "../pages/NotFound/NotFound";
+import AddDevice from "../pages/AddDevice/AddDevice";
 
 export default function AppRoutes() {
   return (
@@ -13,6 +14,7 @@ export default function AppRoutes() {
       <Route path="/devices" component={Devices}/>
       <Route path="/settings" component={Settings}/>
       <Route path="/logs"  component={AppLogs} />
+      <Route path="/devices/Add" component={AddDevice}/>
       <Route path="*" component={NotFound}></Route>
     </Switch>
   );

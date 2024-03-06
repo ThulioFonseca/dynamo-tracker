@@ -52,17 +52,3 @@
   color: #959595;
 }
 
-.page-title {
-  font-family: "poppins", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 600;
-  font-size: 1.5rem;
-  margin: 2rem 0 0 0;
-}
-
-.page-subtitle {
-  font-family: "poppins", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 300;
-  font-size: 0.8rem;
-}
