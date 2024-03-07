@@ -1,9 +1,10 @@
 import { Col, Row } from "react-bootstrap";
 import SimpleTable from "../../components/Tables/SimpleTable/SimpleTable";
-import "./Style.css";
 import { Link } from "wouter";
-import { useEffect, useState } from "react";
 import { HttpService } from "../../Services/HttpService";
+import { useNotification } from "../../contexts/NotificationProvider/useNotification";
+import { useEffect, useState } from "react";
+import "./Style.css";
 
 const header = [
   "Status",
@@ -20,25 +21,27 @@ const httpService = HttpService("http://localhost:7030/api/");
 export default function Devices() {
   const [deviceList, setDeviceList] = useState([]);
   const [loading, setLoading] = useState(false);
+  const { addNotification } = useNotification();
 
   const loadDevices = async () => {
     setLoading(true);
-    const fetchData = async () => {
-      try {
-        const response = await httpService.get("/devices");
-        setDeviceList(response);
-        setLoading(false);
-      } catch (error) {
-        console.error(error);
-        setLoading(false);
-      }
-    };
-
-    fetchData();
+    try {
+      const response = await httpService.get("/devices");
+      setDeviceList(response);
+    } catch (error) {
+      console.error(error);
+      addNotification("error", "Fail to load devices!", error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
-    loadDevices();
+    const loadData = () => {
+      loadDevices();
+    };
+
+    loadData();
   }, []);
 
   return (
@@ -76,7 +79,7 @@ export default function Devices() {
         header={header}
         data={deviceList}
         useCheckbox={true}
-        onItemsCheckedChange={(checkedItems) => console.log(checkedItems)}
+        onItemsCheckedChange={(checkedItems) => console.log("entrei")}
       />
     </>
   );

@@ -1,0 +1,9 @@
+.notification-container {
+  -webkit-box-shadow: -4px 0px 19px -17px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: -4px 0px 19px -17px rgba(0, 0, 0, 0.75);
+  box-shadow: -4px 0px 19px -17px rgba(0, 0, 0, 0.75);
+  min-width: 250px;
+  overflow-y: auto;
+  height: calc(100vh - 2.5rem);
+  margin: 0%;
+}

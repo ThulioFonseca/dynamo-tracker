@@ -1,0 +1,40 @@
+.notification-card {
+    font-size: 0.8rem;
+    font-family: "poppins", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 300;
+  }
+  .notification-card:hover {
+      background-color: #f3f3f3;
+  }
+  
+  .notification-title {
+    font-size: 0.8rem;
+    font-family: "poppins", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+  }
+  
+  .close-notification-button{
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    color: black;
+    font-size: 0.9rem;
+    padding: 0%;
+    border-radius: 0%;
+    width: 2rem;
+  }
+  
+  .close-notification-button:hover {
+    color: white;
+    background-color: rgb(174, 50, 50);
+  }
+  
+  .notification-date{
+    font-size: 0.7rem;
+  }
+  
