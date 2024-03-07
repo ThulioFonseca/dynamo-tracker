@@ -6,9 +6,11 @@ import { Router } from "wouter";
 import MainContainer from "./components/Containers/MainContainer/MainContainer";
 import ContentContainer from "./components/Containers/ContentContainer/ContentContainer";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { NotificationProvider } from "./contexts/NotificationProvider/NotificationProvider";
 
 function App() {
   return (
+    <NotificationProvider>
     <Router>
       <MainContainer>
         <NavBar />
@@ -20,6 +22,7 @@ function App() {
         </div>
       </MainContainer>
     </Router>
+    </NotificationProvider>
   );
 }
 
