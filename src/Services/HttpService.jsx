@@ -19,7 +19,12 @@ export const HttpService = (baseURL) => {
      * @param {string} contentType - O tipo de conteúdo da requisição.
      * @returns {Promise} - Uma Promise contendo os dados da resposta da requisição.
      */
-    async request(endpoint, method = "GET", data = null, contentType = "application/json") {
+    async request(
+      endpoint,
+      method = "GET",
+      data = null,
+      contentType = "application/json"
+    ) {
       const config = {
         method,
         url: endpoint,
@@ -72,10 +77,11 @@ export const HttpService = (baseURL) => {
     /**
      * Faz uma requisição HTTP utilizando o método DELETE.
      * @param {string} endpoint - O endpoint da requisição.
+     * @param {Object} data - Os dados a serem enviados na requisição.     *
      * @returns {Promise} - Uma Promise contendo os dados da resposta da requisição.
      */
-    async delete(endpoint) {
-      return this.request(endpoint, "DELETE");
+    async delete(endpoint, data) {
+      return this.request(endpoint, "DELETE", data);
     },
   };
 };

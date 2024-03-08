@@ -14,6 +14,11 @@
   color: black;
 }
 
+.toolbar-button.disabled {
+  opacity: 0.5; 
+  pointer-events: none; /* Impede cliques no botão desativado */
+}
+
 .toolbar-button:hover {
   background-color: #f3f2f1;
   color: black;
@@ -45,6 +50,10 @@
   padding: 0.2rem 0.2rem 0.2rem 0;
   margin-right: 0.1rem;
   color: #4d9adf;
+}
+
+.toolbar-button-icon.disabled {
+  color: #959595;
 }
 
 .toolbar-divider {

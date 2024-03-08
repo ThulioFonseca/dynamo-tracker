@@ -42,9 +42,10 @@ export default function SimpleTable({
     if (checkedItems.length === data.length) {
       setCheckedItems([]);
     } else {
-      const allIds = data.map((item) => item.Id);
+      const allIds = data.map((item) => item.id);
       setCheckedItems(allIds);
     }
+    console.log(checkedItems);
   };
   function renderStatusIcon(status) {
     return status === "Active" ? (

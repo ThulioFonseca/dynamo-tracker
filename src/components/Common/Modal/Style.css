@@ -1,0 +1,97 @@
+.default-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.default-modal {
+  background-color: #fff;
+  padding: 1.5rem;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  width: 35%;
+  min-width: 300px;
+  font-family: "poppins", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-size: 0.8rem;
+}
+
+.default-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.default-modal-header h2 {
+  margin: 0;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  color: black;
+  font-weight: 300;
+  padding: 0.3rem;
+  width: 1.8rem;
+  height: 1.8rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  align-content: center;
+}
+
+.close-button:hover {
+  background-color: rgb(174, 50, 50);
+  border-radius: 0%;
+  color: #fff;
+}
+
+.default-modal-content {
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  font-weight: 300;
+}
+
+.default-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.default-modal-cancel-button,
+.default-modal-confirm-button {
+  padding: 0.3rem 2rem;
+  border: none;
+  cursor: pointer;
+}
+
+.default-modal-cancel-button {
+  background-color: transparent;
+  border-radius: 0%;
+  border: 1px solid black;
+  color: black;
+}
+
+.default-modal-confirm-button {
+  margin-right: 1rem;
+  background-color: #0078d4;
+  color: #fff;
+  border-radius: 0%;
+}
+
+.default-modal-cancel-button:hover {
+  background-color: #eaeaea;
+  border: 1px solid black;
+}
+.default-modal-confirm-button:hover {
+  background-color: #0168b7;
+}

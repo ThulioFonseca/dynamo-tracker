@@ -4,8 +4,9 @@ import { Link } from "wouter";
 import { HttpService } from "../../Services/HttpService";
 import { useNotification } from "../../contexts/NotificationProvider/useNotification";
 import { useEffect, useState } from "react";
-import "./Style.css";
 import Spinner from "../../components/Common/Spinner/Spinner";
+import Modal from "../../components/Common/Modal/Modal";
+import "./Style.css";
 
 const httpService = HttpService("http://localhost:7030/api/");
 
@@ -13,6 +14,10 @@ export default function Devices() {
   const [deviceList, setDeviceList] = useState([]);
   const [loading, setLoading] = useState(false);
   const { addNotification } = useNotification();
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [selectedItens, setSelectedItens] = useState([]);
+  const [disabledEditButton, setDisabledEditButton] = useState(true);
+  const [disabledDeleteButton, setDisabledDeleteButton] = useState(true);
 
   const columns = [
     { header: "Status", dataKey: "status", key: "status" },
@@ -37,6 +42,32 @@ export default function Devices() {
     }
   };
 
+  const handleSelectedItens = (itens) => {
+    setSelectedItens(itens);
+  };
+
+  const deleteDevice = async () => {
+    try {
+
+      const objDevice = {
+        date: "02/23/2023 15:28:00",
+        user: "thulioFonseca",
+        devices: selectedItens
+      };
+      await httpService.delete("/devices", objDevice);
+    } catch (error) {
+      console.error(error);
+      addNotification("error", "Fail to delete device!", error.message);
+    } finally {
+      handleShowDeleteModal();
+      loadDevices();
+    }
+  };
+
+  const handleShowDeleteModal = () => {
+    setShowDeleteModal(!showDeleteModal);
+  };
+
   useEffect(() => {
     const loadData = () => {
       loadDevices();
@@ -44,6 +75,23 @@ export default function Devices() {
 
     loadData();
   }, []);
+
+  useEffect(() => {
+    switch (selectedItens.length) {
+      case 0:
+        setDisabledDeleteButton(true);
+        setDisabledEditButton(true);
+        break;
+      case 1:
+        setDisabledDeleteButton(false);
+        setDisabledEditButton(false);
+        break;
+      default:
+        setDisabledDeleteButton(false);
+        setDisabledEditButton(true);
+        break;
+    }
+  }, [selectedItens]);
 
   return (
     <>
@@ -63,14 +111,18 @@ export default function Devices() {
                 <span className="toolbar-button-label">Add Device</span>
               </Link>
             </Col>
-            <Col sm={"auto"} className="toolbar-button">
+            <Col sm={"auto"} className={`toolbar-button ${disabledEditButton ? 'disabled' : ''}`}>
               <Link href="/Devices/Edit" className="toolbar-button-link ">
-                <i className="bi bi-pen toolbar-button-icon" />
+                <i className={`bi bi-pen toolbar-button-icon ${disabledDeleteButton ? 'disabled' : ''}`} />
                 <span className="toolbar-button-label">Edit</span>
               </Link>
             </Col>
-            <Col sm={"auto"} className="toolbar-button" onClick={() => {}}>
-              <i className="bi bi-trash toolbar-button-icon" />
+            <Col
+              sm={"auto"}
+              className={`toolbar-button ${disabledDeleteButton ? 'disabled' : ''}`}
+              onClick={() => handleShowDeleteModal()}
+            >
+              <i className={`bi bi-trash toolbar-button-icon ${disabledDeleteButton ? 'disabled' : ''}`} />
               <span className="toolbar-button-label">Delete</span>
             </Col>
             <Col
@@ -87,7 +139,16 @@ export default function Devices() {
             columns={columns}
             data={deviceList}
             useCheckbox={true}
-            onItemsCheckedChange={(checkedItems) => console.log(checkedItems)}
+            onItemsCheckedChange={(checkedItems) =>
+              handleSelectedItens(checkedItems)
+            }
+          />
+          <Modal
+            isOpen={showDeleteModal}
+            title="Delete Device"
+            content="Are you sure you want to delete the selected device(s)?"
+            onClose={handleShowDeleteModal}
+            onConfirm={deleteDevice}
           />
         </>
       )}
