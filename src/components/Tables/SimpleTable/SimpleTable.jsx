@@ -5,23 +5,22 @@ import { useEffect, useState } from "react";
 import "./Style.css";
 
 /**
- * Componente de tabela simples com opção de checkbox.
- * @param {Object} props - Propriedades do componente.
- * @param {string[]} props.header - Cabeçalho da tabela.
- * @param {Object[]} props.data - Dados da tabela.
- * @param {boolean} props.useCheckbox - Indica se deve exibir checkbox.
- * @param {Function} props.onItemsCheckedChange - Função de retorno para itens marcados.
- * @returns {JSX.Element} Componente de tabela simples.
+ * Renders a simple table with the given columns and data, with optional checkbox functionality.
+ *
+ * @param {array} columns - The columns to be displayed in the table.
+ * @param {array} data - The data to be rendered in the table.
+ * @param {boolean} useCheckbox - Determines if checkboxes should be displayed.
+ * @param {function} onItemsCheckedChange - The function to be called when the checked items change.
+ * @return {JSX.Element} The rendered table component.
  */
 export default function SimpleTable({
-  header,
+  columns,
   data,
   useCheckbox,
   onItemsCheckedChange,
 }) {
   const [checkedItems, setCheckedItems] = useState([]);
 
-  // Manipulador de evento para marcar/desmarcar um item
   const handleItemCheck = (itemId) => {
     setCheckedItems((prevCheckedItems) => {
       if (prevCheckedItems.includes(itemId)) {
@@ -32,18 +31,13 @@ export default function SimpleTable({
     });
   };
 
-  // Manipulador de evento para tratar o clique na linha
   const handleRowClick = (itemId, event) => {
-    // Se o clique foi no checkbox, não faz nada (evita a propagação do evento)
     if (event.target.tagName.toLowerCase() === "input") {
       return;
     }
-
-    // Clique fora do checkbox, então lida com a marcação/desmarcação do item
     handleItemCheck(itemId);
   };
 
-  // Manipulador de evento para marcar/desmarcar todos os itens
   const handleCheckAll = () => {
     if (checkedItems.length === data.length) {
       setCheckedItems([]);
@@ -52,8 +46,33 @@ export default function SimpleTable({
       setCheckedItems(allIds);
     }
   };
+  function renderStatusIcon(status) {
+    return status === "Active" ? (
+      <i
+        className="bi bi-check-circle-fill"
+        style={{ paddingRight: "0.5rem", color: "#75bb2c" }}
+      />
+    ) : (
+      <i
+        className="bi bi-x-circle-fill"
+        style={{ paddingRight: "0.5rem", color: "#de2827" }}
+      />
+    );
+  }
 
-  // Chama a função de retorno de chamada com a lista de itens marcados sempre que ela mudar
+  function renderCell(column, item) {
+    if (column.key === "status") {
+      return (
+        <div>
+          {renderStatusIcon(item[column.dataKey])}
+          {item[column.dataKey]}
+        </div>
+      );
+    } else {
+      return item[column.dataKey];
+    }
+  }
+
   useEffect(() => {
     onItemsCheckedChange(checkedItems);
   }, [checkedItems, onItemsCheckedChange]);
@@ -65,56 +84,35 @@ export default function SimpleTable({
           {useCheckbox && (
             <th style={{ width: "2rem" }}>
               <CheckBox
-                checked={checkedItems.length === data.length}
+                checked={checkedItems.length === data.length && data.length > 0}
                 onChange={handleCheckAll}
               />
             </th>
           )}
-          {header.map((item) => (
-            <th key={item}>
-              <div className="table-cell">{item}</div>
+          {columns.map((column) => (
+            <th key={column.key}>
+              <div className="table-cell">{column.header}</div>
             </th>
           ))}
         </tr>
       </thead>
       <tbody>
         {data.map((item) => (
-          <tr key={item["Id"]} onClick={(e) => handleRowClick(item["Id"], e)}>
+          <tr key={item.id} onClick={(e) => handleRowClick(item.id, e)}>
             {useCheckbox && (
               <td>
                 <CheckBox
-                  checked={checkedItems.includes(item["Id"])}
-                  onChange={() => handleItemCheck(item["Id"])}
+                  checked={checkedItems.includes(item.id)}
+                  onChange={() => handleItemCheck(item.id)}
                   onClick={(e) => e.stopPropagation()}
                 />
               </td>
             )}
-            {Object.keys(item)
-              .filter((key) => key !== "Id")
-              .map((key) =>
-                key === "Status" ? (
-                  <td key={item["Id"] + key}>
-                    <div className="table-cell">
-                      {item[key] === "Active" ? (
-                        <i
-                          className="bi bi-check-circle-fill"
-                          style={{ paddingRight: "0.5rem", color: "#75bb2c" }}
-                        />
-                      ) : (
-                        <i
-                          className="bi bi-x-circle-fill"
-                          style={{ paddingRight: "0.5rem", color: "#de2827" }}
-                        />
-                      )}
-                      {item[key]}
-                    </div>
-                  </td>
-                ) : (
-                  <td key={item["Id"] + key}>
-                    <div className="table-cell">{item[key]}</div>
-                  </td>
-                )
-              )}
+            {columns.map((column) => (
+              <td key={`${item.id}-${column.key}`}>
+                <div className="table-cell">{renderCell(column, item)}</div>
+              </td>
+            ))}
           </tr>
         ))}
       </tbody>
@@ -123,7 +121,13 @@ export default function SimpleTable({
 }
 
 SimpleTable.propTypes = {
-  header: PropTypes.arrayOf(PropTypes.string).isRequired,
+  columns: PropTypes.arrayOf(
+    PropTypes.shape({
+      header: PropTypes.string.isRequired,
+      dataKey: PropTypes.string.isRequired,
+      key: PropTypes.string.isRequired,
+    })
+  ).isRequired,
   data: PropTypes.arrayOf(PropTypes.object).isRequired,
   useCheckbox: PropTypes.bool.isRequired,
   onItemsCheckedChange: PropTypes.func.isRequired,

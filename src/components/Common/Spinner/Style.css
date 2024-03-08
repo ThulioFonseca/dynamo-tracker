@@ -1,0 +1,12 @@
+.spinner {
+    width: 0.8rem;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    animation: l5 1s infinite linear alternate;
+  }
+  @keyframes l5 {
+      0%  {box-shadow: 20px 0 #0077d4, -20px 0 #0002;background: #0077d4 }
+      33% {box-shadow: 20px 0 #0077d4, -20px 0 #0002;background: #0002}
+      66% {box-shadow: 20px 0 #0002,-20px 0 #0077d4; background: #0002}
+      100%{box-shadow: 20px 0 #0002,-20px 0 #0077d4; background: #0077d4 }
+  }
