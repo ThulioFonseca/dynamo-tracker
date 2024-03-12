@@ -1,6 +1,6 @@
 import { Col, Row } from "react-bootstrap";
+import { useNotification } from "../../contexts/NotificationProvider/useNotification";
 import "./Style.css";
-import { useNotification } from "../../contexts/NotificationProvider/useNotification"
 
 export default function NotificationCard({ notification }) {
   const { removeNotification } = useNotification();
@@ -13,9 +13,9 @@ export default function NotificationCard({ notification }) {
       case "warning":
         return { icon: "bi-exclamation-triangle-fill", color: "#FFA800" }; // Amber
       case "success":
-        return { icon: "bi-check-circle-fill", color: "#107C10" }; // Green
+        return { icon: "bi-check-circle-fill", color: "#75bb2c" }; // Green
       case "error":
-        return { icon: "bi-x-circle-fill", color: "#D13438" }; // Red
+        return { icon: "bi-x-circle-fill", color: "#de2827" }; // Red
       default:
         return { icon: "bi-info-circle-fill", color: "#0078D4" }; // Azure Blue
     }

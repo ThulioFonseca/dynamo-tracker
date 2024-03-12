@@ -8,25 +8,27 @@ import Spinner from "../../components/Common/Spinner/Spinner";
 import Modal from "../../components/Common/Modal/Modal";
 import "./Style.css";
 
-const httpService = HttpService("http://localhost:7030/api/");
-
 export default function Devices() {
   const [deviceList, setDeviceList] = useState([]);
   const [loading, setLoading] = useState(false);
-  const { addNotification } = useNotification();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedItens, setSelectedItens] = useState([]);
   const [disabledEditButton, setDisabledEditButton] = useState(true);
   const [disabledDeleteButton, setDisabledDeleteButton] = useState(true);
+  const { addNotification } = useNotification();
+
+  const httpService = HttpService(
+    import.meta.env.VITE_DYNAMO_DEVICE_MANAGEMENT_API_URL
+  );
 
   const columns = [
     { header: "Status", dataKey: "status", key: "status" },
-    { header: "Serial Number", dataKey: "serialNumber", key: "serialNumber" },
-    { header: "Vehicle ID", dataKey: "vehicleId", key: "vehicleId" },
-    { header: "Vehicle Model", dataKey: "vehicleModel", key: "vehicleModel" },
-    { header: "Vehicle Brand", dataKey: "vehicleBrand", key: "vehicleBrand" },
     { header: "Alias", dataKey: "alias", key: "alias" },
+    { header: "Serial Number", dataKey: "serialNumber", key: "serialNumber" },
     { header: "Mac Address", dataKey: "macAddress", key: "macAddress" },
+    { header: "Vehicle Brand", dataKey: "vehicleBrand", key: "vehicleBrand" },
+    { header: "Vehicle Model", dataKey: "vehicleModel", key: "vehicleModel" },
+    { header: "Vehicle ID", dataKey: "vehicleId", key: "vehicleId" },
   ];
 
   const loadDevices = async () => {
@@ -48,13 +50,20 @@ export default function Devices() {
 
   const deleteDevice = async () => {
     try {
-
       const objDevice = {
         date: "02/23/2023 15:28:00",
         user: "thulioFonseca",
-        devices: selectedItens
+        devices: selectedItens,
       };
-      await httpService.delete("/devices", objDevice);
+      const response = await httpService.delete("/devices", objDevice);
+
+      if (response) {
+        addNotification(
+          "success",
+          "Device(s) deleted!",
+          `${selectedItens.length} device(s) deleted successfully!`
+        );
+      }
     } catch (error) {
       console.error(error);
       addNotification("error", "Fail to delete device!", error.message);
@@ -111,18 +120,33 @@ export default function Devices() {
                 <span className="toolbar-button-label">Add Device</span>
               </Link>
             </Col>
-            <Col sm={"auto"} className={`toolbar-button ${disabledEditButton ? 'disabled' : ''}`}>
+            <Col
+              sm={"auto"}
+              className={`toolbar-button ${
+                disabledEditButton ? "disabled" : ""
+              }`}
+            >
               <Link href="/Devices/Edit" className="toolbar-button-link ">
-                <i className={`bi bi-pen toolbar-button-icon ${disabledDeleteButton ? 'disabled' : ''}`} />
+                <i
+                  className={`bi bi-pen toolbar-button-icon ${
+                    disabledDeleteButton ? "disabled" : ""
+                  }`}
+                />
                 <span className="toolbar-button-label">Edit</span>
               </Link>
             </Col>
             <Col
               sm={"auto"}
-              className={`toolbar-button ${disabledDeleteButton ? 'disabled' : ''}`}
+              className={`toolbar-button ${
+                disabledDeleteButton ? "disabled" : ""
+              }`}
               onClick={() => handleShowDeleteModal()}
             >
-              <i className={`bi bi-trash toolbar-button-icon ${disabledDeleteButton ? 'disabled' : ''}`} />
+              <i
+                className={`bi bi-trash toolbar-button-icon ${
+                  disabledDeleteButton ? "disabled" : ""
+                }`}
+              />
               <span className="toolbar-button-label">Delete</span>
             </Col>
             <Col

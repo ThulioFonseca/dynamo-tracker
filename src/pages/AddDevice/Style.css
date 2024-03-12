@@ -17,13 +17,32 @@ label {
   font-weight: 300;
   font-size: 0.8rem;
 }
+.input-field:disabled,
+.input-field:disabled:hover {
+  opacity: 0.5;
+  cursor: default;
+  border: 1px solid rgb(145, 145, 145);
+}
+
+.input-field-error {
+  appearance: none;
+  background-color: transparent;
+  border: 1px solid red;
+  padding: 0.3rem 0.5rem;
+  margin: 0;
+  color: black;
+  font-family: "poppins", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-size: 0.8rem;
+}
 
 .input-field:focus {
   outline: 1px solid #0078d4;
   border: 1px solid #0078d4;
 }
 
-.input-field:not(:focus):hover {
+.input-field:not(:focus, :disabled):hover {
   border: 1px solid black;
 }
 
@@ -67,5 +86,3 @@ option {
   border: 1px solid #0078d4;
   border-radius: 0;
 }
-
-
