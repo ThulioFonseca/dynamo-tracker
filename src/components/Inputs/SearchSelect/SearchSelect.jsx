@@ -82,7 +82,7 @@ export default function SearchSelect({
         style={hasError ? { border: "1px solid red" } : {}}
         disabled={disabled}
       >
-        <span>{selectedOption ? selectedOption.label : "Selecione"}</span>
+        <span>{selectedOption ? selectedOption.Label : "Selecione"}</span>
         <span className="arrow"></span>
       </button>
       {isOpen && (
@@ -95,19 +95,21 @@ export default function SearchSelect({
               onChange={(event) => handleSearch(event)}
             />
           </div>
-          {options.map((option) => (
-            <button
-              key={option.value}
-              className={selectedOption === option ? "selected" : ""}
-              onClick={() => {
-                handleOptionClick(option);
-              }}
-              tabIndex="0"
-              type="button"
-            >
-              {option.label}
-            </button>
-          ))}
+          <div className="custom-search-select-options">
+            {options.map((option) => (
+              <button
+                key={option.Value}
+                className={selectedOption === option ? "selected" : ""}
+                onClick={() => {
+                  handleOptionClick(option);
+                }}
+                tabIndex="0"
+                type="button"
+              >
+                {option.Label}
+              </button>
+            ))}
+          </div>
         </div>
       )}
     </div>
@@ -119,4 +121,6 @@ SearchSelect.propTypes = {
   onChange: PropTypes.func.isRequired,
   hasError: PropTypes.bool,
   onSearch: PropTypes.func.isRequired,
+  disabled: PropTypes.bool,
+  value: PropTypes.object,
 };

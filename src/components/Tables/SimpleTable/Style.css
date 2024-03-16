@@ -19,7 +19,7 @@ td {
 
 .table-cell {
   display: flex;
-  width: auto;
+  width: 100%;
   align-items: center;
   height: 1.8rem;
 }

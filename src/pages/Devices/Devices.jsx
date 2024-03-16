@@ -22,13 +22,48 @@ export default function Devices() {
   );
 
   const columns = [
-    { header: "Status", dataKey: "status", key: "status" },
-    { header: "Alias", dataKey: "alias", key: "alias" },
-    { header: "Serial Number", dataKey: "serialNumber", key: "serialNumber" },
-    { header: "Mac Address", dataKey: "macAddress", key: "macAddress" },
-    { header: "Vehicle Brand", dataKey: "vehicleBrand", key: "vehicleBrand" },
-    { header: "Vehicle Model", dataKey: "vehicleModel", key: "vehicleModel" },
-    { header: "Vehicle ID", dataKey: "vehicleId", key: "vehicleId" },
+    {
+      header: "Status",
+      dataKey: "status",
+      key: "status",
+      size: 10,
+    },
+    {
+      header: "Alias",
+      dataKey: "alias",
+      key: "alias",
+      size: 10,
+    },
+    {
+      header: "Serial Number",
+      dataKey: "serialNumber",
+      key: "serialNumber",
+      size: 10,
+    },
+    {
+      header: "Mac Address",
+      dataKey: "macAddress",
+      key: "macAddress",
+      size: 10,
+    },
+    {
+      header: "Vehicle Brand",
+      dataKey: "vehicleBrand",
+      key: "vehicleBrand",
+      size: 10,
+    },
+    {
+      header: "Vehicle Model",
+      dataKey: "vehicleModel",
+      key: "vehicleModel",
+      size: 20,
+    },
+    {
+      header: "Vehicle ID",
+      dataKey: "vehicleId",
+      key: "vehicleId",
+      size: 10,
+    },
   ];
 
   const loadDevices = async () => {

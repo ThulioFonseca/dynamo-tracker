@@ -91,7 +91,7 @@ export default function SimpleTable({
             </th>
           )}
           {columns.map((column) => (
-            <th key={column.key}>
+            <th key={column.key} style={{ width: `${column.size}rem` }}>
               <div className="table-cell">{column.header}</div>
             </th>
           ))}

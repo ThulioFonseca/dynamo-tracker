@@ -108,3 +108,8 @@
   font-weight: 300;
   font-size: 0.8rem;
 }
+
+.custom-search-select-options {
+  max-height: 10rem;
+  overflow-y: auto;
+}

@@ -6,114 +6,176 @@ import CancelButton from "../../components/Inputs/CancelButton/CancelButton";
 import SearchSelect from "../../components/Inputs/SearchSelect/SearchSelect";
 import { HttpService } from "../../Services/HttpService";
 import { useNotification } from "../../contexts/NotificationProvider/useNotification";
-import fuzzysort from "fuzzysort";
-
-import "./Style.css";
 import { useEffect, useState } from "react";
 import Modal from "../../components/Common/Modal/Modal";
-import { Redirect } from "wouter";
 import { navigate } from "wouter/use-browser-location";
+import fuzzysort from "fuzzysort";
+import "./Style.css";
 export default function AddDevice() {
   const [vehicleBrands, setVehicleBrands] = useState([]);
+  const [filteredVehicleBrands, setFilteredVehicleBrands] = useState([]);
   const [vehicleModels, setVehicleModels] = useState([]);
+  const [filteredVehicleModels, setFilteredVehicleModels] = useState([]);
+  const [vehicleModelYears, setVehicleModelYears] = useState([]);
+  const [filteredVehicleModelYears, setFilteredVehicleModelYears] = useState([]);
   const [selectedBrand, setSelectedBrand] = useState(null);
-  const [selectedYear, setSelectedYear] = useState("");
+  const [selectedModel, setSelectedModel] = useState(null);
   const { addNotification } = useNotification();
-  const [modelList, setModelList] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const vehicleApi = HttpService(import.meta.env.VITE_VEHICLE_API_URL);
-  const deviceManagementApi = HttpService(
-    import.meta.env.VITE_DYNAMO_DEVICE_MANAGEMENT_API_URL
-  );
+  const deviceManagementApi = HttpService(import.meta.env.VITE_DYNAMO_DEVICE_MANAGEMENT_API_URL);
 
-  const handleSearchBrandChange = async (value) => {
-    if (value && value.length > 2) {
-      try {
-        const query = `/GetMakeForManufacturer/${value}?format=json`;
-        const brands = await vehicleApi.get(query);
+  const handleGetBrands = async () => {
+    try {
+      const query = "ConsultarMarcas";
+      const body = "codigoTabelaReferencia=307&codigoTipoVeiculo=1";
+      const contentType = "application/x-www-form-urlencoded; charset=UTF-8";
 
-        if (brands?.Results) {
-          const brandMap = {};
-          const brandOptions = [];
+      const brands = await vehicleApi.post(query, body, contentType);
 
-          brands.Results.forEach((brand) => {
-            const makeName = brand.Make_Name;
-            if (!brandMap[makeName]) {
-              brandMap[makeName] = true;
-              brandOptions.push({
-                label: makeName,
-                value: makeName,
-              });
-            }
-          });
-          // Ordenar brandOptions com base na similaridade com o termo de pesquisa
-          const sortedBrandOptions = fuzzysort
-            .go(value, brandOptions, {
-              key: "label", // A chave do objeto que contém o texto a ser pesquisado
-              limit: 5, // Limitar o número de resultados retornados
-              threshold: -10000, // Ajustar a sensibilidade da pesquisa
-            })
-            .map((result) => result.obj);
-
-          setVehicleBrands(sortedBrandOptions);
-        }
-      } catch (error) {
-        addNotification("error", "Fail to load brands!", error.message);
-        console.error(error);
+      if (brands) {
+        setVehicleBrands(brands);
       }
+    } catch (error) {
+      addNotification("error", "Fail to load brands!", error.message);
+      console.error(error);
     }
   };
 
-  const handleSearchModelByYear = async (value) => {
-    if (value && value.length > 3) {
-      setSelectedYear(value);
-      try {
-        const query = `/getmodelsformakeyear/make/${selectedBrand}/modelyear/${value}?format=json`;
-        const models = await vehicleApi.get(query);
+  const handleGetModels = async () => {
+    try {
+      const query = "ConsultarModelos";
+      const body = `codigoTipoVeiculo=1&codigoTabelaReferencia=307&codigoModelo=&codigoMarca=${selectedBrand}&ano=&codigoTipoCombustivel=&anoModelo=&modeloCodigoExterno=`;
+      const contentType = "application/x-www-form-urlencoded; charset=UTF-8";
 
-        if (models?.Results) {
-          const modelMap = {};
-          const modelOptions = [];
+      const models = await vehicleApi.post(query, body, contentType);
 
-          models.Results.forEach((model) => {
-            const modelName = model.Model_Name;
-            if (!modelMap[modelName]) {
-              modelMap[modelName] = true;
-              modelOptions.push({
-                label: modelName,
-                value: modelName,
-              });
-            }
-          });
-          setModelList(modelOptions);
-        }
-      } catch (error) {
-        addNotification("error", "Fail to load vehicle models!", error.message);
-        console.log(error);
+      if (models) {
+        setVehicleModels(models.Modelos);
       }
+    } catch (error) {
+      addNotification("error", "Fail to load brands!", error.message);
+      console.error(error);
+    }
+  };
+
+  const handleGetModelYears = async () => {
+    try {
+      const query = "ConsultarAnoModelo";
+      const body = `codigoTipoVeiculo=1&codigoTabelaReferencia=307&codigoModelo=${selectedModel}&codigoMarca=${selectedBrand}&ano=&codigoTipoCombustivel=&anoModelo=&modeloCodigoExterno=`;
+      const contentType = "application/x-www-form-urlencoded; charset=UTF-8";
+
+      const modelYears = await vehicleApi.post(query, body, contentType);
+
+      if (modelYears) {
+        setVehicleModelYears(modelYears);
+      }
+    } catch (error) {
+      addNotification("error", "Fail to load brands!", error.message);
+      console.error(error);
+    }
+  };
+
+  const handleSearchBrandChange = async (value) => {
+    if (vehicleBrands) {
+      // Ordenar brandOptions com base na similaridade com o termo de pesquisa
+      const sortedBrandOptions = fuzzysort
+        .go(value, vehicleBrands, {
+          key: "Label", // A chave do objeto que contém o texto a ser pesquisado
+          limit: 50, // Limitar o número de resultados retornados
+          threshold: -10000, // Ajustar a sensibilidade da pesquisa
+        })
+        .map((result) => result.obj);
+
+      if (value.length === 0) {
+        setFilteredVehicleBrands(vehicleBrands);
+        return;
+      }
+
+      setFilteredVehicleBrands(sortedBrandOptions);
     }
   };
 
   const handleSearchModelChange = async (value) => {
-    const sortedModelOptions = fuzzysort
-      .go(value, modelList, {
-        key: "label",
-        limit: 5,
-        threshold: -10000,
-      })
-      .map((result) => result.obj);
+    if (vehicleModels) {
+      // Ordenar brandOptions com base na similaridade com o termo de pesquisa
+      const sortedModelOptions = fuzzysort
+        .go(value, vehicleModels, {
+          key: "Label", // A chave do objeto que contém o texto a ser pesquisado
+          limit: 50, // Limitar o número de resultados retornados
+          threshold: -10000, // Ajustar a sensibilidade da pesquisa
+        })
+        .map((result) => result.obj);
 
-    setVehicleModels(sortedModelOptions);
+      if (value.length === 0) {
+        setFilteredVehicleModels(vehicleModels);
+        return;
+      }
+
+      setFilteredVehicleModels(sortedModelOptions);
+    }
+  };
+
+  const handleSearchModelYearChange = async (value) => {
+    if (vehicleModelYears) {
+      // Ordenar brandOptions com base na similaridade com o termo de pesquisa
+      const sortedModelYearsOptions = fuzzysort
+        .go(value, vehicleModelYears, {
+          key: "Label", // A chave do objeto que contém o texto a ser pesquisado
+          limit: 50, // Limitar o número de resultados retornados
+          threshold: -10000, // Ajustar a sensibilidade da pesquisa
+        })
+        .map((result) => result.obj);
+
+      if (value.length === 0) {
+        setFilteredVehicleModelYears(vehicleModelYears);
+        return;
+      }
+
+      setFilteredVehicleModelYears(sortedModelYearsOptions);
+    }
   };
 
   const handleSelectedBrandChange = (value) => {
     setSelectedBrand(value);
+    setFilteredVehicleBrands([]);
+  };
+
+  const handleSelectedModelChange = (value) => {
+    setSelectedModel(value);
+    setFilteredVehicleModels([]);
   };
 
   useEffect(() => {
-    handleSearchModelByYear(selectedYear);
-  }, [selectedYear]);
+    handleGetBrands();
+  }, []);
+
+  useEffect(() => {
+    if (vehicleBrands) {
+      setFilteredVehicleBrands(vehicleBrands);
+    }
+  }, [vehicleBrands]);
+
+  useEffect(() => {
+    handleGetModels();
+  }, [selectedBrand]);
+
+  useEffect(() => {
+    if (vehicleModels) {
+      setFilteredVehicleModels(vehicleModels);
+    }
+  }, [vehicleModels]);
+
+  useEffect(() => {
+    handleGetModelYears();
+  }, [selectedModel]);
+
+  useEffect(() => {
+    if (vehicleModelYears) {
+      setFilteredVehicleModelYears(vehicleModelYears);
+    }
+  }, [vehicleModelYears]);
 
   const handleSubmit = async (values) => {
     try {
@@ -126,9 +188,9 @@ export default function AddDevice() {
           SerialNumber: values.serialNumber,
           Status: "Active",
           VehicleID: values.plate,
-          VehicleBrand: values.manufacturer.value,
-          VehicleModel: values.model.value,
-          Year: values.year,
+          VehicleBrand: values.manufacturer.Label,
+          VehicleModel: values.model.Label,
+          Year: values.year.Label,
         },
       };
 
@@ -266,7 +328,7 @@ export default function AddDevice() {
               <Col md={12} lg={4} className="d-flex align-items-center">
                 <Field
                   as={SearchSelect}
-                  options={vehicleBrands}
+                  options={filteredVehicleBrands}
                   id="manufacturer"
                   name="manufacturer"
                   onSearch={handleSearchBrandChange}
@@ -274,34 +336,9 @@ export default function AddDevice() {
                     setFieldValue("manufacturer", e);
                     setFieldValue("model", "");
                     setFieldValue("year", "");
-                    handleSelectedBrandChange(e.value);
-                    setVehicleModels([]);
+                    handleSelectedBrandChange(e.Value);
                   }}
                   hasError={errors.manufacturer}
-                />
-              </Col>
-            </Row>
-            <Row className="mb-2">
-              <Col md={2} className="d-flex align-items-center">
-                <label htmlFor="year" className="d-block text-truncate">
-                  Model Year <span style={{ color: "red" }}>*</span>
-                </label>
-              </Col>
-              <Col md={12} lg={4} className="d-flex align-items-center">
-                <Field
-                  id="year"
-                  name="year"
-                  type="text"
-                  className={`w-100 h-75 input-field ${
-                    errors.year ? "input-field-error" : ""
-                  }`}
-                  onChange={(e) => {
-                    setFieldValue("year", e.target.value);
-                    setFieldValue("model", "");
-                    handleSearchModelByYear(e.target.value);
-                  }}
-                  disabled={values.manufacturer === ""}
-                  placeholder="Ex.: 2020"
                 />
               </Col>
             </Row>
@@ -314,15 +351,38 @@ export default function AddDevice() {
               <Col md={12} lg={4} className="d-flex align-items-center">
                 <Field
                   as={SearchSelect}
-                  options={vehicleModels}
+                  options={filteredVehicleModels}
                   id="model"
                   name="model"
                   hasError={errors.model}
                   onSearch={handleSearchModelChange}
                   onChange={(e) => {
                     setFieldValue("model", e);
+                    setFieldValue("year", "");
+                    handleSelectedModelChange(e.Value);
                   }}
-                  disabled={values.year === ""}
+                  disabled={values.manufacturer === ""}
+                />
+              </Col>
+            </Row>
+            <Row className="mb-2">
+              <Col md={2} className="d-flex align-items-center">
+                <label htmlFor="model" className="d-block text-truncate">
+                  Vehicle Model Year <span style={{ color: "red" }}>*</span>
+                </label>
+              </Col>
+              <Col md={12} lg={4} className="d-flex align-items-center">
+                <Field
+                  as={SearchSelect}
+                  options={filteredVehicleModelYears}
+                  id="year"
+                  name="year"
+                  hasError={errors.model}
+                  onSearch={handleSearchModelYearChange}
+                  onChange={(e) => {
+                    setFieldValue("year", e);
+                  }}
+                  disabled={values.model === ""}
                 />
               </Col>
             </Row>
