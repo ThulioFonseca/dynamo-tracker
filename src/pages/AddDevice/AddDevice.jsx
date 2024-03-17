@@ -11,20 +11,26 @@ import Modal from "../../components/Common/Modal/Modal";
 import { navigate } from "wouter/use-browser-location";
 import fuzzysort from "fuzzysort";
 import "./Style.css";
+import Dropdown from "../../components/Inputs/Dropdown/Dropdown";
+import { StatusOptions } from "../../Static/DropdownOptions";
 export default function AddDevice() {
   const [vehicleBrands, setVehicleBrands] = useState([]);
   const [filteredVehicleBrands, setFilteredVehicleBrands] = useState([]);
   const [vehicleModels, setVehicleModels] = useState([]);
   const [filteredVehicleModels, setFilteredVehicleModels] = useState([]);
   const [vehicleModelYears, setVehicleModelYears] = useState([]);
-  const [filteredVehicleModelYears, setFilteredVehicleModelYears] = useState([]);
+  const [filteredVehicleModelYears, setFilteredVehicleModelYears] = useState(
+    []
+  );
   const [selectedBrand, setSelectedBrand] = useState(null);
   const [selectedModel, setSelectedModel] = useState(null);
   const { addNotification } = useNotification();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const vehicleApi = HttpService(import.meta.env.VITE_VEHICLE_API_URL);
-  const deviceManagementApi = HttpService(import.meta.env.VITE_DYNAMO_DEVICE_MANAGEMENT_API_URL);
+  const deviceManagementApi = HttpService(
+    import.meta.env.VITE_DYNAMO_DEVICE_MANAGEMENT_API_URL
+  );
 
   const handleGetBrands = async () => {
     try {
@@ -148,7 +154,10 @@ export default function AddDevice() {
   };
 
   useEffect(() => {
-    handleGetBrands();
+    const searchBrands = async () => {
+      await handleGetBrands();
+    };
+    searchBrands();
   }, []);
 
   useEffect(() => {
@@ -158,7 +167,13 @@ export default function AddDevice() {
   }, [vehicleBrands]);
 
   useEffect(() => {
-    handleGetModels();
+    const SearchModels = async () => {
+      if (selectedBrand) {
+        await handleGetModels();
+        setFilteredVehicleBrands(vehicleBrands);
+      }
+    };
+    SearchModels();
   }, [selectedBrand]);
 
   useEffect(() => {
@@ -168,7 +183,13 @@ export default function AddDevice() {
   }, [vehicleModels]);
 
   useEffect(() => {
-    handleGetModelYears();
+    const SearchModelYears = async () => {
+      if (selectedModel) {
+        await handleGetModelYears();
+        setFilteredVehicleModels(vehicleModels);
+      }
+    };
+    SearchModelYears();
   }, [selectedModel]);
 
   useEffect(() => {
@@ -184,9 +205,8 @@ export default function AddDevice() {
         User: "thulioFonseca",
         Device: {
           Alias: values.alias,
-          MacAddress: values.macAddress,
           SerialNumber: values.serialNumber,
-          Status: "Active",
+          Status: values.status.value,
           VehicleID: values.plate,
           VehicleBrand: values.manufacturer.Label,
           VehicleModel: values.model.Label,
@@ -224,15 +244,14 @@ export default function AddDevice() {
       <Formik
         initialValues={{
           serialNumber: "",
-          model: "",
-          manufacturer: "",
-          year: "",
+          model: null,
+          manufacturer: null,
+          year: null,
           plate: "",
-          macAddress: "",
+          status: null,
           alias: "",
         }}
         onSubmit={(values) => {
-          console.log(values);
           handleSubmit(values);
         }}
         validateOnBlur={false}
@@ -248,8 +267,8 @@ export default function AddDevice() {
           if (!values.plate) {
             errors.plate = true;
           }
-          if (!values.macAddress) {
-            errors.macAddress = true;
+          if (!values.status) {
+            errors.status = true;
           }
           if (!values.model) {
             errors.model = true;
@@ -303,19 +322,19 @@ export default function AddDevice() {
             </Row>
             <Row className="mb-2">
               <Col md={2} className="d-flex align-items-center">
-                <label htmlFor="macAddress" className="d-block text-truncate">
-                  Mac-Address <span style={{ color: "red" }}>*</span>
+                <label htmlFor="status" className="d-block text-truncate">
+                  Status <span style={{ color: "red" }}>*</span>
                 </label>
               </Col>
               <Col md={12} lg={4} className="d-flex align-items-center">
                 <Field
-                  type="text"
-                  id="macAddress"
-                  name="macAddress"
-                  className={`w-100 h-75 input-field ${
-                    errors.macAddress ? "input-field-error" : ""
-                  }`}
-                  placeholder="Ex.: 00:00:00:00:00:00"
+                  as={Dropdown}
+                  id="status"
+                  name="status"
+                  onChange={(e) => {
+                    setFieldValue("status", e);
+                  }}
+                  options={StatusOptions}
                 />
               </Col>
             </Row>
@@ -334,8 +353,8 @@ export default function AddDevice() {
                   onSearch={handleSearchBrandChange}
                   onChange={(e) => {
                     setFieldValue("manufacturer", e);
-                    setFieldValue("model", "");
-                    setFieldValue("year", "");
+                    setFieldValue("model", null);
+                    setFieldValue("year", null);
                     handleSelectedBrandChange(e.Value);
                   }}
                   hasError={errors.manufacturer}
@@ -358,10 +377,10 @@ export default function AddDevice() {
                   onSearch={handleSearchModelChange}
                   onChange={(e) => {
                     setFieldValue("model", e);
-                    setFieldValue("year", "");
+                    setFieldValue("year", null);
                     handleSelectedModelChange(e.Value);
                   }}
-                  disabled={values.manufacturer === ""}
+                  disabled={values.manufacturer === null}
                 />
               </Col>
             </Row>
@@ -377,12 +396,12 @@ export default function AddDevice() {
                   options={filteredVehicleModelYears}
                   id="year"
                   name="year"
-                  hasError={errors.model}
+                  hasError={errors.year}
                   onSearch={handleSearchModelYearChange}
                   onChange={(e) => {
                     setFieldValue("year", e);
                   }}
-                  disabled={values.model === ""}
+                  disabled={values.model === null}
                 />
               </Col>
             </Row>
@@ -413,9 +432,7 @@ export default function AddDevice() {
                 </CancelButton>
               </Col>
               <Col sm={"auto"} className="d-flex justify-content-start">
-                <SubmitButton disabled={isSubmitting} onClick={handleSubmit}>
-                  Add Device
-                </SubmitButton>
+                <SubmitButton disabled={isSubmitting}>Add Device</SubmitButton>
               </Col>
             </Row>
           </Form>

@@ -58,6 +58,7 @@ export default function Dropdown({ options, onChange }) {
         className="custom-dropdown-toggle"
         onClick={toggleDropdown}
         tabIndex="0"
+        type="button"
       >
         <span>{selectedOption ? selectedOption.label : "Selecione"}</span>
         <span className="arrow"></span>
@@ -72,6 +73,7 @@ export default function Dropdown({ options, onChange }) {
                 handleOptionClick(option);
               }}
               tabIndex="0"
+              type="button"
             >
               {option.label}
             </button>
